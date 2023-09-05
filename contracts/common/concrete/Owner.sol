@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.9;
 
-import "../absract/IOwner.sol";
+import "../abstract/IOwner.sol";
 
 abstract contract Owner is IOwner {
     address private _owner;
@@ -21,6 +21,9 @@ abstract contract Owner is IOwner {
     function _transferOwnership(address newOwner) internal returns (address) {
         address oldOwner = _owner;
         _owner = newOwner;
+
+        emit OwnershipTransferred(oldOwner, newOwner);
+
         return oldOwner;
     }
 

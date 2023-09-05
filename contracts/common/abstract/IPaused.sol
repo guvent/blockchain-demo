@@ -4,5 +4,7 @@ pragma solidity ^0.8.9;
 interface IPaused {
     function paused() external view returns (bool);
 
-    // TODO Add events here...
+    event Paused(address account);
+
+    event Unpaused(address account);
 }

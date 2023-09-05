@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.9;
 
-import "../absract/IPaused.sol";
+import "../abstract/IPaused.sol";
 
 abstract contract Paused is IPaused {
     bool private _state;
@@ -16,10 +16,14 @@ abstract contract Paused is IPaused {
 
     function _pause() internal {
         _state = true;
+
+        emit Paused(msg.sender);
     }
 
     function _resume() internal {
         _state = false;
+
+        emit Unpaused(msg.sender);
     }
 
     modifier requirePaused() {

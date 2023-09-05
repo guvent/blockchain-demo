@@ -17,14 +17,11 @@ interface IERC20 {
 
     function decimal() external view returns (uint8);
 
-    // TODO All Events: will check with openzeppelin contracts...
-    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Transfer(address indexed from, address indexed to, uint256 amount);
 
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+    event Approval(address indexed from, address indexed to, uint256 amount);
 
-    event DestroyedBlackFunds(address indexed blackListedUser, uint balance);
+    event Mint(address indexed to, uint256 total, uint256 amount);
+
+    event Burn(address indexed from, uint256 total, uint256 amount);
 }

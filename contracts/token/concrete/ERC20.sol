@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.9;
 
-import "../absract/IERC20.sol";
+import "../abstract/IERC20.sol";
 
 contract ERC20 is IERC20 {
     string private _name;
@@ -49,27 +49,25 @@ contract ERC20 is IERC20 {
         require(to != address(0), "To address not able zero!");
         require(amount > 0, "Amount must greater than 0!");
 
-        uint256 fromBalance = _balances[from];
-        uint256 newBalance = 0;
+        require(_total >= amount, "Insufficient token balance!");
+        require(_balances[from] >= amount, "Insufficient account balance!");
 
-        unchecked {
-            newBalance = fromBalance - amount;
-        }
-
-        require(newBalance >= 0, "Insufficient Balance!");
+        uint256 newBalance = _balances[from] - amount;
 
         _balances[from] = newBalance;
         _balances[to] += amount;
+
+        emit Transfer(from, to, amount);
     }
 
     function _mint(address to, uint256 amount) internal {
         require(to != address(0), "Account not able zero address!");
         require(amount > 0, "Amount must greater than 0!");
 
-        unchecked {
-            _total += amount;
-            _balances[to] += amount;
-        }
+        _total += amount;
+        _balances[to] += amount;
+
+        emit Mint(to, _total, amount);
     }
 
     function _burn(address from, uint256 amount) internal {
@@ -84,6 +82,8 @@ contract ERC20 is IERC20 {
 
         _total = tokenAmount;
         _balances[from] = accountAmount;
+
+        emit Burn(from, _total, amount);
     }
 
     function _approve(address from, address to, uint256 amount) internal {
@@ -92,12 +92,16 @@ contract ERC20 is IERC20 {
         // require(amount > 0, "Amount must greater than 0!");
 
         _allowances[from][to] = amount;
+
+        emit Approval(from, to, amount);
     }
 
     function _increaseAllowance(address account, uint256 addedValue) internal {
         require(account != address(0), "To address not able zero!");
 
         _allowances[msg.sender][account] += addedValue;
+
+        emit Approval(msg.sender, account, addedValue);
     }
 
     function _decreaseAllowance(
@@ -111,5 +115,7 @@ contract ERC20 is IERC20 {
         );
 
         _allowances[msg.sender][account] -= subtractedValue;
+
+        emit Approval(msg.sender, account, subtractedValue);
     }
 }

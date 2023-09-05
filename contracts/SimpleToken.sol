@@ -2,15 +2,15 @@
 pragma solidity ^0.8.9;
 
 import "./util/Context.sol";
-import "./common/concrete/ERC20.sol";
+import "./token/concrete/ERC20.sol";
 import "./common/concrete/Owner.sol";
 import "./common/concrete/Blacklist.sol";
 import "./common/concrete/Paused.sol";
 
-contract MyToken is ERC20, Context, Owner, Blacklist, Paused {
+contract SimpleToken is ERC20, Context, Owner, Blacklist, Paused {
     mapping(address => uint) time;
 
-    constructor() ERC20("My Token", "MYT") {}
+    constructor() ERC20("Simple Token", "SIMPLET") {}
 
     function mint(address to, uint amount) public onlyOwner {
         _mint(to, amount);
@@ -33,10 +33,16 @@ contract MyToken is ERC20, Context, Owner, Blacklist, Paused {
         address to,
         uint256 amount
     ) public requireNotPaused {
-        require(allowance(from, to) >= amount, "Account don't have allowance!");
+        address spender = _mSender();
+
+        require(
+            allowance(from, spender) >= amount,
+            "Account don't have allowance!"
+        );
         require(!_isBlacklistedTwice(from, to), "Account Blocked!");
 
         _transfer(from, to, amount);
+        _decreaseAllowance(spender, amount);
     }
 
     function transferTo(address to, uint256 amount) public requireNotPaused {
