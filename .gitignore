@@ -1,0 +1,32 @@
+node_modules
+
+yarn-error.log
+yarn-lock.json
+
+yarn.lock
+package-lock.json
+
+
+node_modules
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+
+
+node_modules
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+

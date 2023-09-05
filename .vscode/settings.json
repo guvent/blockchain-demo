@@ -1,0 +1,5 @@
+{
+    "solidity-va.hover": true,
+    "solidity-va.uml.actors.enable": false,
+    "solidity-va.debug.parser.showExceptions": true
+}
