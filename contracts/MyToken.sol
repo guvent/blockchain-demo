@@ -70,4 +70,12 @@ contract MyToken is ERC20, Context, Owner, Blacklist, Paused {
 
         _blacklistAccount(account, true);
     }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _resume();
+    }
 }
