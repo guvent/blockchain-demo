@@ -101,7 +101,7 @@ contract ERC20 is IERC20 {
 
         _allowances[msg.sender][account] += addedValue;
 
-        emit Approval(msg.sender, account, addedValue);
+        emit Allowance(account, addedValue);
     }
 
     function _decreaseAllowance(
@@ -116,6 +116,21 @@ contract ERC20 is IERC20 {
 
         _allowances[msg.sender][account] -= subtractedValue;
 
-        emit Approval(msg.sender, account, subtractedValue);
+        emit Allowance(account, subtractedValue);
+    }
+
+    function _transferAllowance(
+        address account,
+        uint256 subtractedValue
+    ) internal {
+        require(account != address(0), "To address not able zero!");
+        require(
+            _allowances[account][msg.sender] >= subtractedValue,
+            "Account don't have allowance!"
+        );
+
+        _allowances[account][msg.sender] -= subtractedValue;
+
+        emit Allowance(account, subtractedValue);
     }
 }

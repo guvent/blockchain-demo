@@ -19,6 +19,8 @@ interface IERC20 {
 
     event Transfer(address indexed from, address indexed to, uint256 amount);
 
+    event Allowance(address indexed to, uint256 amount);
+
     event Approval(address indexed from, address indexed to, uint256 amount);
 
     event Mint(address indexed to, uint256 total, uint256 amount);

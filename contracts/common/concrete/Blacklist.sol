@@ -16,7 +16,9 @@ contract Blacklist is IBlacklist {
         address from,
         address to
     ) internal view returns (bool) {
-        return _blacklist[from] || _blacklist[to];
+        if (_blacklist[from]) return true;
+        if (_blacklist[to]) return true;
+        return false;
     }
 
     function _blacklistAccount(address account, bool value) internal {
@@ -26,7 +28,7 @@ contract Blacklist is IBlacklist {
     }
 
     modifier checkSenderBlacklist() {
-        require(!isBlacklisted(msg.sender), "Account Blocked!");
+        require(!isBlacklisted(msg.sender), "Sender Account Blocked!");
         _;
     }
 }

@@ -12,7 +12,10 @@ contract SimpleToken is ERC20, Context, Owner, Blacklist, Paused {
 
     constructor() ERC20("Simple Token", "SIMPLET") {}
 
-    function mint(address to, uint amount) public onlyOwner {
+    function mint(
+        address to,
+        uint amount
+    ) public onlyOwner checkSenderBlacklist {
         _mint(to, amount);
     }
 
@@ -20,19 +23,19 @@ contract SimpleToken is ERC20, Context, Owner, Blacklist, Paused {
         _burn(_mSender(), amount);
     }
 
-    function approve(address to, uint256 amount) public {
-        address from = _mSender();
+    function approve(address to, uint256 amount) public checkSenderBlacklist {
+        address spender = _mSender();
 
-        require(!_isBlacklistedTwice(from, to), "Account Blocked!");
+        require(!_isBlacklistedTwice(spender, to), "Account Blocked!");
 
-        _approve(from, to, amount);
+        _approve(spender, to, amount);
     }
 
     function transferFrom(
         address from,
         address to,
         uint256 amount
-    ) public requireNotPaused {
+    ) public requireNotPaused checkSenderBlacklist {
         address spender = _mSender();
 
         require(
@@ -42,10 +45,13 @@ contract SimpleToken is ERC20, Context, Owner, Blacklist, Paused {
         require(!_isBlacklistedTwice(from, to), "Account Blocked!");
 
         _transfer(from, to, amount);
-        _decreaseAllowance(spender, amount);
+        _transferAllowance(from, amount);
     }
 
-    function transferTo(address to, uint256 amount) public requireNotPaused {
+    function transferTo(
+        address to,
+        uint256 amount
+    ) public requireNotPaused checkSenderBlacklist {
         address from = _mSender();
 
         require(!_isBlacklistedTwice(from, to), "Account Blocked!");
@@ -53,10 +59,7 @@ contract SimpleToken is ERC20, Context, Owner, Blacklist, Paused {
         _transfer(from, to, amount);
     }
 
-    function increaseAllowance(
-        address account,
-        uint256 addedValue
-    ) public checkSenderBlacklist {
+    function increaseAllowance(address account, uint256 addedValue) public {
         require(!isBlacklisted(account), "Account Blocked!");
 
         _increaseAllowance(account, addedValue);
@@ -72,7 +75,7 @@ contract SimpleToken is ERC20, Context, Owner, Blacklist, Paused {
     }
 
     function blacklistAccount(address account) public onlyOwner {
-        require(!_checkOwner(), "The owner cannot block itself!");
+        require(owner() != account, "The owner cannot block itself!");
 
         _blacklistAccount(account, true);
     }

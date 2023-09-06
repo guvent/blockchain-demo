@@ -27,12 +27,12 @@ abstract contract Paused is IPaused {
     }
 
     modifier requirePaused() {
-        require(_state, "Not yet paused!");
+        require(_state, "Not Yet Paused!");
         _;
     }
 
     modifier requireNotPaused() {
-        require(!_state, "Not yet paused!");
+        require(!_state, "Token Paused!");
         _;
     }
 }
