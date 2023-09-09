@@ -44,6 +44,8 @@ contract ERC20 is IERC20 {
         return 10;
     }
 
+    /*****  Internal Functions *****/
+
     function _transfer(address from, address to, uint256 amount) internal {
         require(from != address(0), "From address not able zero!");
         require(to != address(0), "To address not able zero!");
