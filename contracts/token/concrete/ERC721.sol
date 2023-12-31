@@ -19,6 +19,8 @@ contract ERC721 is IERC721 {
     mapping(uint256 => address) private _tokenApprovals;
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
+    /***** Initializers *****/
+
     constructor(
         string memory name_,
         string memory symbol_,
@@ -29,6 +31,8 @@ contract ERC721 is IERC721 {
         _uri = uri_;
     }
 
+    /***** Public Functions *****/
+
     function name() public view returns (string memory) {
         return _name;
     }
@@ -37,9 +41,9 @@ contract ERC721 is IERC721 {
         return _symbol;
     }
 
-    function tokenURI(uint256 tokenId) public view returns (string memory) {
-        _requireMinted(tokenId);
-
+    function tokenURI(
+        uint256 tokenId
+    ) public view _requireMinted(tokenId) returns (string memory) {
         string memory baseUri = _baseURI();
 
         if (bytes(baseUri).length > 0) {
@@ -47,10 +51,6 @@ contract ERC721 is IERC721 {
         }
 
         return "";
-    }
-
-    function _baseURI() internal view returns (string memory) {
-        return _uri;
     }
 
     function balanceOf(
@@ -128,8 +128,7 @@ contract ERC721 is IERC721 {
 
     function getApproved(
         uint256 tokenId
-    ) public view override returns (address operator) {
-        _requireMinted(tokenId);
+    ) public view override _requireMinted(tokenId) returns (address operator) {
         return _tokenApprovals[tokenId];
     }
 
@@ -141,6 +140,10 @@ contract ERC721 is IERC721 {
     }
 
     /*****  Internal Functions *****/
+
+    function _baseURI() internal view returns (string memory) {
+        return _uri;
+    }
 
     function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
         return _owners[tokenId];
@@ -219,10 +222,6 @@ contract ERC721 is IERC721 {
             getApproved(tokenId) == account);
     }
 
-    function _requireMinted(uint256 tokenId) internal view {
-        require(_exists(tokenId), "Token must be minted!");
-    }
-
     function _mint(address account, uint256 tokenId) internal {
         require(account != address(0), "Account address must not be zero!");
         require(!_exists(tokenId), "Token has already minted!");
@@ -280,5 +279,12 @@ contract ERC721 is IERC721 {
         } else {
             return true;
         }
+    }
+
+    /*****  Modifiers *****/
+
+    modifier _requireMinted(uint256 tokenId) {
+        require(_exists(tokenId), "Token must be minted!");
+        _;
     }
 }

@@ -7,6 +7,8 @@ library Strings {
     bytes16 private constant _SYMBOLS = "0123456789abcdef";
     uint8 private constant _ADDRESS_LENGTH = 20;
 
+    /***** Internal Functions *****/
+
     function toString(uint256 value) internal pure returns (string memory) {
         unchecked {
             uint256 length = _unsignedLog10(value) + 1;

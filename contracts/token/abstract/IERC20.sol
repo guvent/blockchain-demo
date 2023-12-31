@@ -2,6 +2,8 @@
 pragma solidity ^0.8.9;
 
 interface IERC20 {
+    /***** External Functions *****/
+
     function name() external view returns (string memory);
 
     function symbol() external view returns (string memory);
@@ -16,6 +18,8 @@ interface IERC20 {
     ) external view returns (uint256);
 
     function decimal() external view returns (uint8);
+
+    /***** Events *****/
 
     event Transfer(address indexed from, address indexed to, uint256 amount);
 

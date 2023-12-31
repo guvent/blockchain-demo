@@ -4,6 +4,8 @@
 pragma solidity ^0.8.9;
 
 interface IERC721Receiver {
+    /***** External Functions *****/
+
     function onERC721Received(
         address operator,
         address from,

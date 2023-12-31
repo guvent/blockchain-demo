@@ -2,6 +2,8 @@
 pragma solidity ^0.8.9;
 
 interface IERC721 {
+    /***** External Functions *****/
+
     function balanceOf(address owner) external view returns (uint256 balance);
 
     function ownerOf(uint256 tokenId) external view returns (address owner);
@@ -34,7 +36,8 @@ interface IERC721 {
         address operator
     ) external view returns (bool);
 
-    // Events...
+    /***** Events *****/
+
     event Mint(address indexed to, uint256 indexed tokenId);
     event Burn(address indexed owner, uint256 indexed tokenId);
     event Transfer(

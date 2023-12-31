@@ -6,11 +6,15 @@ import "../abstract/IBlacklist.sol";
 contract Blacklist is IBlacklist {
     mapping(address => bool) private _blacklist;
 
+    /***** Public Functions *****/
+
     function isBlacklisted(
         address account
     ) public view override returns (bool) {
         return _blacklist[account];
     }
+
+    /***** Internal Functions *****/
 
     function _isBlacklistedTwice(
         address from,
@@ -26,6 +30,8 @@ contract Blacklist is IBlacklist {
 
         emit Blacklisted(account);
     }
+
+    /***** Modifiers *****/
 
     modifier checkSenderBlacklist() {
         require(!isBlacklisted(msg.sender), "Sender Account Blocked!");

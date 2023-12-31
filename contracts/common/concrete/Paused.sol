@@ -6,9 +6,13 @@ import "../abstract/IPaused.sol";
 abstract contract Paused is IPaused {
     bool private _state;
 
+    /***** Initializers *****/
+
     constructor() {
         _state = false;
     }
+
+    /***** Internal Functions *****/
 
     function paused() public view override returns (bool) {
         return _state;
@@ -25,6 +29,8 @@ abstract contract Paused is IPaused {
 
         emit Unpaused(msg.sender);
     }
+
+    /***** Modifiers *****/
 
     modifier requirePaused() {
         require(_state, "Not Yet Paused!");
